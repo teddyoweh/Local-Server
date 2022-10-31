@@ -33,7 +33,7 @@ def index():
         'name':_,
         'path':path,
         'is_file':os.path.isfile(os.path.join(path, _)),
- 'size':os.path.getsize(os.path.join(path, _)xw),
+ 'size':os.path.getsize(os.path.join(path, _)),
         'created_time':c_ti,
         'modified_time':m_ti
         }

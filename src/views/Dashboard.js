@@ -8,23 +8,20 @@ const [dirdata,setDirdata] =useState([{}])
 const [ddview,setDDview]=useState(true)
 const [dataloaded,setDataloaded] =useState(false)
 const [viewinfodata,setViewinfodata] = useState({})
-    let { ftp } = useParams();
+ 
  let ftpdata2 = JSON.stringify(useParams())
 let ftpdata = JSON.parse(ftpdata2)
-    
-    console.log(ftp)
-    if(useParams()['*']){
-    ftp = ftp+'/'+ftpdata['*']
-    }
+    console.log(ftpdata)
+
+   const ftp = ftpdata['ftp']+'/'+ftpdata['*']
+
 
 if (ftp==''||ftp==undefined||ftp==null){
      ftp =''}
     // else{
     // ftp = "./"+ftp}
     
-    const body ={
-    path:ftp
-    }
+  
     
     const header = {
         headers: {
@@ -41,14 +38,14 @@ if (ftp==''||ftp==undefined||ftp==null){
     }
 useEffect(() => {
   return () => {
-    axios.get(`http://127.0.0.1:9000/?path=${ftp}`,header,{params:body})
+    axios.get(`http://127.0.0.1:9000/?path=${ftp}`,header)
     .then(function(response){
         console.log(response.data)
         setDirdata(response.data)
         setDataloaded(true)
     })
   };
-}, [ftp]);
+}, );
 function setViewinfo(e,data){
     e.preventDefault();
 console.log('dds')
@@ -98,12 +95,12 @@ return (
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" aria-current="page">Home</li>
     <li class="breadcrumb-item active " aria-current="page">FTP</li>
-    {dataloaded=true && ftpdata['*'].split('/').map((item,index)=>{
+    {dataloaded==true && ftpdata['*'].split('/').map((item,index)=>{
     console.log(ftpdata['*'].split('/').length)
     if(index==ftpdata['*'].split('/').length-1){
-    const host2 = window.location.host
+// let host2 = window.location.host
     return (
-     <li class="breadcrumb-item active-m" aria-current="page">   <a href={'http://'+host2}>{item}       </a></li>
+      <a href={'http://'}> <li class="breadcrumb-item active-m" aria-current="page">   {item}     </li>  </a>
 
     )
     }
@@ -140,11 +137,12 @@ return (
 { dataloaded==true? 
 
 dirdata[1].data.map((item,index) => {
+  let host2 = window.location.href
 return (
  
 
 <div className="ftp" key={index}>
-
+<a href={host2+"/"+item['name']}>
 <div className="name">
 {item.is_file?
 <>
@@ -181,6 +179,7 @@ return (
 
 <label htmlFor="">{item.name}</label>
 </div>
+</a>
 <div className="options">
 <a onClick={(e)=> setViewinfo(e) }>
 <i class='bx bxs-file-find' ></i>
